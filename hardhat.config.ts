@@ -1,4 +1,4 @@
-import "@nomiclabs/hardhat-etherscan";
+import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-waffle";
 import "solidity-coverage";
 import "hardhat-deploy";
@@ -91,6 +91,11 @@ const userConfig: HardhatUserConfig = {
       ...sharedNetworkConfig,
       url: `https://volta-rpc.energyweb.org`,
     },
+    custom: {
+      url: 'https://cyber-testnet.alt.technology',
+      chainId: 111557560,
+      accounts: ["0xfed4030d3379f87b009e9011b83c9e89a9d16411b039e7ca718453c2bd0d3aac"],
+    },
   },
   namedAccounts: {
     deployer: 0,
@@ -99,8 +104,23 @@ const userConfig: HardhatUserConfig = {
     timeout: 2000000,
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      custom: "abc",
+    },
+    customChains: [
+      {
+        network: "custom",
+        chainId: 111557560,
+        urls: {
+          apiURL: "https://api.w3w.ai/cyber-testnet/v1/explorer/command_api/contract",
+          browserURL: "https://cyber-testnet.socialscan.io/",
+        }
+      },
+    ]
   },
+  sourcify: {
+    enabled: true
+  }
 };
 if (NODE_URL) {
   userConfig.networks!!.custom = {
